@@ -14,10 +14,33 @@ const Shop = () => {
           .then((data) => setProducts(data));
     }, []);
 
-    useEffect( ()=>{
+    useEffect(() => {
+      // console.log('products', products);
       const storedCart = getShoppingCart();
-      console.log(storedCart);
-    } , [])
+      const savedCart = [];
+      // console.log(storedCart);
+      
+      // step 1: get id of the addedProduct
+      for (const id in storedCart) {
+        // console.log(id);
+        
+        // step 2: get product from products state by using id
+        const addedProduct = products.find(product => product.id === id)
+        if(addedProduct){
+          
+          // step 3: add quantity
+          const quantity = storedCart[id];
+          addedProduct.quantity = quantity;
+
+          // step 4: add the added product to saved cart
+          savedCart.push(addedProduct)
+        
+        }
+        // console.log('added Product', addedProduct);
+      }
+      // step 5: set the cart
+      setCart(savedCart)
+    }, [products]);
 
     const handleAddToCart = (product) => {
     //   console.log(product);
